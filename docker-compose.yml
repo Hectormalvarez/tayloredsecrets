@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  next:
+    build:
+      context: .
+    command: yarn run dev
+    container_name: next
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    ports:
+      - 3001:3000
+    stdin_open: true
+    volumes: 
+      - .:/usr/src/app
