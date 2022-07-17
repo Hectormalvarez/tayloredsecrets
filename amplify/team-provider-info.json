@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tayloredsecrets-dev-24137-authRole",
+      "UnauthRoleArn": "arn:aws:iam::180025060303:role/amplify-tayloredsecrets-dev-24137-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::180025060303:role/amplify-tayloredsecrets-dev-24137-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-tayloredsecrets-dev-24137-deployment",
+      "UnauthRoleName": "amplify-tayloredsecrets-dev-24137-unauthRole",
+      "StackName": "amplify-tayloredsecrets-dev-24137",
+      "StackId": "arn:aws:cloudformation:us-east-2:180025060303:stack/amplify-tayloredsecrets-dev-24137/fb5421d0-0579-11ed-812e-067a3248195e",
+      "AmplifyAppId": "d2yxtv6exzioj5"
+    }
+  }
+}

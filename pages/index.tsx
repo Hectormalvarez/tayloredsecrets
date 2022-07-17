@@ -97,7 +97,7 @@ const Home: NextPage = () => {
                   border
                   border-solid
                   border-gray-300 bg-white
-                  bg-clip-padding px-3 py-1.5 text-base
+                  bg-clip-padding px-3 py-2.5 text-base
                   font-normal
                   text-gray-700
                   transition
