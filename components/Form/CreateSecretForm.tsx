@@ -6,41 +6,67 @@ import { createSecret } from "../../src/graphql/mutations";
 
 import { useForm } from "react-hook-form";
 import { encrypt } from "../../utils/crypto";
+import { useEffect } from "react";
 
-type FormData = {
+enum PasswordType {
+  passphrase = "passphrase",
+  nopassword = "no-password",
+  pin = "pin",
+}
+
+// data types for new secret form
+type NewSecretFormData = {
   secret: string;
+  passwordType: PasswordType;
   password: string;
 };
 
+// creating a next page
 const CreateSecretForm: NextPage = () => {
-  const router = useRouter();
+  const router = useRouter(); 
   const {
     register,
     handleSubmit,
     resetField,
+    watch,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<NewSecretFormData>({
+    defaultValues: {
+      passwordType: PasswordType.nopassword
+    },
+  });
+
+  const passwordType = watch("passwordType");
 
   const onSubmit = handleSubmit(async (data) => {
-    const id = uuid()
-    let secret = encrypt(data.secret, data.password);
+    const id = uuid();
+    let secret;
+    if (data.password) {
+      secret = encrypt(data.secret, data.password);
+    } else {
+      secret = encrypt(data.secret, passwordType);
+    }
     const newSecret = {
       id,
-      secret
-    }
+      secret,
+    };
     await API.graphql({
       query: createSecret,
-      variables: { input: newSecret }
-    })
+      variables: { input: newSecret },
+    });
     resetField("secret");
-    router.push(`/secrets/${id}`)
+    router.push(`/secrets/${id}`);
   });
+
+  useEffect(() => {
+    console.log(passwordType);
+  }, [passwordType]);
 
   return (
     <form onSubmit={onSubmit}>
       <div className="flex flex-col">
-        <label className="form-label mb-2 inline-block text-gray-700">
-          Enter Secret
+        <label htmlFor="secret" className="form-label mb-2 inline-block text-gray-700">
+          Secret
         </label>
         <input
           className="
@@ -62,15 +88,42 @@ const CreateSecretForm: NextPage = () => {
                 "
           type={"text"}
           {...register("secret", { required: true })}
+          placeholder="Enter Secret Here"
         />
         {errors.secret?.type === "required" && (
           <p className="pb-2 text-lg text-red-400">Please enter a secret!</p>
         )}
-        <label className="form-label mb-2 inline-block text-gray-700 capitalize">
-          password to open secret
-        </label>
-        <input
+        <select
+          {...register("passwordType")}
           className="
+                  form-control
+                  m-0
+                  mb-2
+                  block
+                  w-full
+                  rounded
+                  border
+                  border-solid
+                  border-gray-600 bg-gray-200
+                  bg-clip-padding px-3 py-2.5 text-base
+                  font-normal
+                  text-gray-700
+                  transition
+                  ease-in-out
+                  focus:border-blue-800 focus:bg-white focus:text-gray-700 focus:shadow-md focus:shadow-blue-300 focus:outline-none
+"
+        >
+          <option value="passphrase">Passphrase</option>
+          <option value="pin">Pin</option>
+          <option value="no-password">No Password</option>
+        </select>
+        {passwordType === "passphrase" && (
+          <>
+            <label className="form-label mb-2 inline-block capitalize text-gray-700">
+              password to open secret
+            </label>
+            <input
+              className="
                   form-control
                   m-0
                   mb-2
@@ -87,9 +140,12 @@ const CreateSecretForm: NextPage = () => {
                   ease-in-out
                   focus:border-blue-800 focus:bg-white focus:text-gray-700 focus:shadow-md focus:shadow-blue-300 focus:outline-none
                 "
-          type={"text"}
-          {...register("password")}
-        />
+              type={"password"}
+              {...register("password")}
+              placeholder="Enter Password Here"
+            />
+          </>
+        )}
         <button
           type="submit"
           className="
@@ -112,7 +168,7 @@ const CreateSecretForm: NextPage = () => {
                   active:shadow-lg
                 "
         >
-          Create Taylored Secret
+          Create Secret
         </button>
       </div>
     </form>
