@@ -7,7 +7,7 @@ import Lock from "../../public/cyber_padlock.svg";
 const Header: NextPage = () => {
   return (
     <>
-      <div className="flex items-center justify-between ">
+      <div className="flex items-center justify-between pt-24">
         <h1 className="text-4xl font-bold lg:text-7xl">Taylored Secrets</h1>
         <div className="relative h-32 w-32">
           <Image src={Lock} alt="connected lock" layout="fill" />

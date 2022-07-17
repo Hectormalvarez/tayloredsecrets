@@ -3,6 +3,7 @@ import { useState } from "react";
 import { API } from "aws-amplify";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/router";
+import { createSecret } from "../../src/graphql/mutations";
 
 import { useForm } from "react-hook-form";
 import { encrypt } from "../../utils/crypto";
@@ -12,6 +13,7 @@ type FormData = {
 };
 
 const CreateSecretForm: NextPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -19,10 +21,20 @@ const CreateSecretForm: NextPage = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     let encryptedText = encrypt(data.secret, "password");
+    const id = uuid()
+    const newSecret = {
+      id,
+      secret: data.secret
+    }
+    await API.graphql({
+      query: createSecret,
+      variables: { input: newSecret }
+    })
     console.log(encryptedText);
     resetField("secret");
+    router.push(`/secrets/${id}`)
   });
 
   return (
