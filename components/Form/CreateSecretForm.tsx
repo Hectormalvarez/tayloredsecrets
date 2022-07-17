@@ -22,17 +22,17 @@ const CreateSecretForm: NextPage = () => {
   } = useForm<FormData>();
 
   const onSubmit = handleSubmit(async (data) => {
-    let encryptedText = encrypt(data.secret, "password");
+    let secret = encrypt(data.secret, "password");
     const id = uuid()
     const newSecret = {
       id,
-      secret: data.secret
+      secret
     }
     await API.graphql({
       query: createSecret,
       variables: { input: newSecret }
     })
-    console.log(encryptedText);
+    console.log(secret);
     resetField("secret");
     router.push(`/secrets/${id}`)
   });
