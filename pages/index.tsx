@@ -2,55 +2,14 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 
-const crypto = require("crypto");
 import { useForm } from "react-hook-form";
+import { encrypt } from "../utils/crypto";
 
 import Lock from "../public/cyber_padlock.svg";
 
 type FormData = {
   secret: string;
 };
-
-
-const encrypt = (plainText: string | FormData, password: string) => {
-  try {
-    const iv = crypto.randomBytes(16);
-    const key = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("base64")
-      .substr(0, 32);
-    const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
-
-    let encrypted = cipher.update(plainText);
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    return iv.toString("hex") + ":" + encrypted.toString("hex");
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const decrypt = (encryptedText: any, password: string) => {
-  try {
-    const textParts = encryptedText.split(":");
-    const iv = Buffer.from(textParts.shift(), "hex");
-
-    const encryptedData = Buffer.from(textParts.join(":"), "hex");
-    const key = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("base64")
-      .substr(0, 32);
-    const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
-
-    const decrypted = decipher.update(encryptedData);
-    const decryptedText = Buffer.concat([decrypted, decipher.final()]);
-    return decryptedText.toString();
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 
 const Home: NextPage = () => {
   const {
@@ -59,8 +18,9 @@ const Home: NextPage = () => {
     resetField,
     formState: { errors },
   } = useForm<FormData>();
+
   const onSubmit = handleSubmit((data) => {
-    let encryptedText = decrypt(data.secret, "password");
+    let encryptedText = encrypt(data.secret, "password");
     console.log(encryptedText);
     resetField("secret");
   });
@@ -80,7 +40,7 @@ const Home: NextPage = () => {
             <Image src={Lock} alt="connected lock" layout="fill" />
           </div>
         </div>
-          <h2 className="py-8 text-2xl">Safely Shared Secrets!</h2>
+        <h2 className="py-8 text-2xl">Safely Shared Secrets!</h2>
         <form onSubmit={onSubmit}>
           <div className="flex flex-col">
             <label className="form-label mb-2 inline-block text-gray-700">
