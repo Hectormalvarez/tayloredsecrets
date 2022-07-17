@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import { useState } from "react";
 import { API } from "aws-amplify";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/router";
