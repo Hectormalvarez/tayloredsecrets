@@ -10,6 +10,8 @@ export const createSecret = /* GraphQL */ `
     createSecret(input: $input, condition: $condition) {
       id
       secret
+      attempts
+      passwordType
       createdAt
       updatedAt
     }
@@ -23,6 +25,8 @@ export const updateSecret = /* GraphQL */ `
     updateSecret(input: $input, condition: $condition) {
       id
       secret
+      attempts
+      passwordType
       createdAt
       updatedAt
     }
@@ -36,6 +40,8 @@ export const deleteSecret = /* GraphQL */ `
     deleteSecret(input: $input, condition: $condition) {
       id
       secret
+      attempts
+      passwordType
       createdAt
       updatedAt
     }

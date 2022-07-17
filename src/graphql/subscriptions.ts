@@ -7,6 +7,8 @@ export const onCreateSecret = /* GraphQL */ `
     onCreateSecret {
       id
       secret
+      attempts
+      passwordType
       createdAt
       updatedAt
     }
@@ -17,6 +19,8 @@ export const onUpdateSecret = /* GraphQL */ `
     onUpdateSecret {
       id
       secret
+      attempts
+      passwordType
       createdAt
       updatedAt
     }
@@ -27,6 +31,8 @@ export const onDeleteSecret = /* GraphQL */ `
     onDeleteSecret {
       id
       secret
+      attempts
+      passwordType
       createdAt
       updatedAt
     }

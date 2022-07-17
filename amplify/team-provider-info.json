@@ -11,5 +11,18 @@
       "StackId": "arn:aws:cloudformation:us-east-2:180025060303:stack/amplify-tayloredsecrets-dev-24137/fb5421d0-0579-11ed-812e-067a3248195e",
       "AmplifyAppId": "d2yxtv6exzioj5"
     }
+  },
+  "devr": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tayloredsecrets-devr-153925-authRole",
+      "UnauthRoleArn": "arn:aws:iam::180025060303:role/amplify-tayloredsecrets-devr-153925-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::180025060303:role/amplify-tayloredsecrets-devr-153925-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-tayloredsecrets-devr-153925-deployment",
+      "UnauthRoleName": "amplify-tayloredsecrets-devr-153925-unauthRole",
+      "StackName": "amplify-tayloredsecrets-devr-153925",
+      "StackId": "arn:aws:cloudformation:us-east-2:180025060303:stack/amplify-tayloredsecrets-devr-153925/8c97b7b0-0610-11ed-84e6-0a9afa9d5062",
+      "AmplifyAppId": "d2yxtv6exzioj5"
+    }
   }
 }

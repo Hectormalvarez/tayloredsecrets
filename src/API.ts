@@ -5,10 +5,14 @@
 export type CreateSecretInput = {
   id?: string | null,
   secret: string,
+  attempts?: number | null,
+  passwordType: string,
 };
 
 export type ModelSecretConditionInput = {
   secret?: ModelStringInput | null,
+  attempts?: ModelIntInput | null,
+  passwordType?: ModelStringInput | null,
   and?: Array< ModelSecretConditionInput | null > | null,
   or?: Array< ModelSecretConditionInput | null > | null,
   not?: ModelSecretConditionInput | null,
@@ -54,10 +58,24 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type Secret = {
   __typename: "Secret",
   id: string,
   secret: string,
+  attempts?: number | null,
+  passwordType: string,
   createdAt: string,
   updatedAt: string,
 };
@@ -65,6 +83,8 @@ export type Secret = {
 export type UpdateSecretInput = {
   id: string,
   secret?: string | null,
+  attempts?: number | null,
+  passwordType?: string | null,
 };
 
 export type DeleteSecretInput = {
@@ -74,6 +94,8 @@ export type DeleteSecretInput = {
 export type ModelSecretFilterInput = {
   id?: ModelIDInput | null,
   secret?: ModelStringInput | null,
+  attempts?: ModelIntInput | null,
+  passwordType?: ModelStringInput | null,
   and?: Array< ModelSecretFilterInput | null > | null,
   or?: Array< ModelSecretFilterInput | null > | null,
   not?: ModelSecretFilterInput | null,
@@ -111,6 +133,8 @@ export type CreateSecretMutation = {
     __typename: "Secret",
     id: string,
     secret: string,
+    attempts?: number | null,
+    passwordType: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -126,6 +150,8 @@ export type UpdateSecretMutation = {
     __typename: "Secret",
     id: string,
     secret: string,
+    attempts?: number | null,
+    passwordType: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -141,6 +167,8 @@ export type DeleteSecretMutation = {
     __typename: "Secret",
     id: string,
     secret: string,
+    attempts?: number | null,
+    passwordType: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -155,6 +183,8 @@ export type GetSecretQuery = {
     __typename: "Secret",
     id: string,
     secret: string,
+    attempts?: number | null,
+    passwordType: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -173,6 +203,8 @@ export type ListSecretsQuery = {
       __typename: "Secret",
       id: string,
       secret: string,
+      attempts?: number | null,
+      passwordType: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -185,6 +217,8 @@ export type OnCreateSecretSubscription = {
     __typename: "Secret",
     id: string,
     secret: string,
+    attempts?: number | null,
+    passwordType: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -195,6 +229,8 @@ export type OnUpdateSecretSubscription = {
     __typename: "Secret",
     id: string,
     secret: string,
+    attempts?: number | null,
+    passwordType: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -205,6 +241,8 @@ export type OnDeleteSecretSubscription = {
     __typename: "Secret",
     id: string,
     secret: string,
+    attempts?: number | null,
+    passwordType: string,
     createdAt: string,
     updatedAt: string,
   } | null,
