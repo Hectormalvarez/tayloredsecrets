@@ -8,14 +8,14 @@ import TayloredSecretsHeader from "../components/UI/TayloredSecretsHeader";
 const Home: NextPage = () => {
 
   return (
-    <div className="h-screen bg-slate-50">
+    <div className="m-auto h-screen max-w-5xl border-l-2 border-r-2 border-slate-700 bg-slate-50 px-8 pt-6">
       <Head>
         <title>Taylored Secrets</title>
         <meta name="description" content="One Time Taylored Secrets" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="m-auto max-w-5xl border-l-2 border-r-2 border-slate-100 px-8 pt-6">
+      <main className="">
         <TayloredSecretsHeader />
         <CreateSecretForm />
       </main>

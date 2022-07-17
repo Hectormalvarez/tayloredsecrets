@@ -18,7 +18,7 @@ const encrypt = (plainText: string | FormData, password: string) => {
   }
 };
 
-const decrypt = (encryptedText: any, password: string) => {
+const decrypt: any = (encryptedText: any, password: string) => {
   try {
     const textParts = encryptedText.split(":");
     const iv = Buffer.from(textParts.shift(), "hex");
@@ -35,7 +35,7 @@ const decrypt = (encryptedText: any, password: string) => {
     const decryptedText = Buffer.concat([decrypted, decipher.final()]);
     return decryptedText.toString();
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 

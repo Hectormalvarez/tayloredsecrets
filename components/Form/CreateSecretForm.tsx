@@ -9,6 +9,7 @@ import { encrypt } from "../../utils/crypto";
 
 type FormData = {
   secret: string;
+  password: string;
 };
 
 const CreateSecretForm: NextPage = () => {
@@ -21,8 +22,8 @@ const CreateSecretForm: NextPage = () => {
   } = useForm<FormData>();
 
   const onSubmit = handleSubmit(async (data) => {
-    let secret = encrypt(data.secret, "password");
     const id = uuid()
+    let secret = encrypt(data.secret, data.password);
     const newSecret = {
       id,
       secret
@@ -31,7 +32,6 @@ const CreateSecretForm: NextPage = () => {
       query: createSecret,
       variables: { input: newSecret }
     })
-    console.log(secret);
     resetField("secret");
     router.push(`/secrets/${id}`)
   });
@@ -66,6 +66,30 @@ const CreateSecretForm: NextPage = () => {
         {errors.secret?.type === "required" && (
           <p className="pb-2 text-lg text-red-400">Please enter a secret!</p>
         )}
+        <label className="form-label mb-2 inline-block text-gray-700 capitalize">
+          password to open secret
+        </label>
+        <input
+          className="
+                  form-control
+                  m-0
+                  mb-2
+                  block
+                  w-full
+                  rounded
+                  border
+                  border-solid
+                  border-gray-300 bg-white
+                  bg-clip-padding px-3 py-2.5 text-base
+                  font-normal
+                  text-gray-700
+                  transition
+                  ease-in-out
+                  focus:border-blue-800 focus:bg-white focus:text-gray-700 focus:shadow-md focus:shadow-blue-300 focus:outline-none
+                "
+          type={"text"}
+          {...register("password")}
+        />
         <button
           type="submit"
           className="
