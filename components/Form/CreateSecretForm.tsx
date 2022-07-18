@@ -6,11 +6,11 @@ import { createSecret } from "../../src/graphql/mutations";
 
 import { useForm } from "react-hook-form";
 import { encrypt } from "../../utils/crypto";
-import { useEffect } from "react";
 
-import Input from "../UI/Input";
+import PasswordField from "../../components/Form/PasswordField";
 
-enum PasswordType {
+// options for passwordType field
+enum PasswordTypeEnum {
   passphrase = "passphrase",
   nopassword = "no-password",
   pin = "pin",
@@ -19,20 +19,8 @@ enum PasswordType {
 // data types for new secret form
 type NewSecretFormData = {
   secret: string;
-  passwordType: PasswordType;
+  passwordType: PasswordTypeEnum;
   password: string;
-};
-
-const PasswordInput = ({ register }: any) => {
-  return (
-    <Input
-      fieldName="password"
-      register={register}
-      placeholder="Enter Password Here"
-      label="Password to Reveal Secret"
-      type="password"
-      />
-  );
 };
 
 // creating a next page
@@ -46,7 +34,7 @@ const CreateSecretForm: NextPage = () => {
     formState: { errors },
   } = useForm<NewSecretFormData>({
     defaultValues: {
-      passwordType: PasswordType.nopassword,
+      passwordType: PasswordTypeEnum.nopassword,
     },
   });
 
@@ -74,9 +62,13 @@ const CreateSecretForm: NextPage = () => {
     router.push(`/secrets/${id}`);
   });
 
-  useEffect(() => {
-    console.log(passwordType);
-  }, [passwordType]);
+  // render password entry based on passwordType
+  function SecretPasswordEntry(): any {
+    if (!passwordType) return;
+    if (passwordType === "passphrase")
+      return <PasswordField register={register} />;
+    return
+  }
 
   return (
     <form onSubmit={onSubmit}>
@@ -136,7 +128,7 @@ const CreateSecretForm: NextPage = () => {
           <option value="pin">Pin</option>
           <option value="no-password">No Password</option>
         </select>
-        {passwordType === "passphrase" && <PasswordInput register={register} />}
+          <SecretPasswordEntry />
         <button
           type="submit"
           className="

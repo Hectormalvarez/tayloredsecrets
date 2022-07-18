@@ -10,21 +10,23 @@ import { deleteSecret } from "../../src/graphql/mutations";
 import { useForm } from "react-hook-form";
 
 import { decrypt } from "../../utils/crypto";
-
 import TayloredSecretsHeader from "../../components/UI/TayloredSecretsHeader";
-import Input from "../../components/UI/Input";
+import PasswordField from "../../components/Form/PasswordField";
 
-const initialSecretState = { id: "", secret: "", createdAt: "" };
+const initialSecretState = { id: "", secret: "", createdAt: "", passwordType: "" };
 
 type FormData = {
   password: string;
 };
 
 const Secret: NextPage = () => {
-  const router = useRouter();
   const [secret, setSecret] = useState(initialSecretState);
   const [decryptedSecret, setDecryptedSecret] = useState("");
   const [buttonClicked, setButtonClicked] = useState(false);
+
+  // get id from url
+  const router = useRouter();
+  const { id } = router.query;
 
   // initialize form management
   const {
@@ -37,29 +39,25 @@ const Secret: NextPage = () => {
   // on decrypt secret: decrypts secret text and deletes secret from cloud
   const onDecryptSubmit = handleSubmit(async (data) => {
     try {
+      
       setDecryptedSecret(decrypt(secret.secret, data.password)); // gets password from form to decrypt
-      setButtonClicked(true);
-      await API.graphql({
-        query: deleteSecret,
-        variables: { input: { id } },
-      });
+      setButtonClicked(true); // set button clicked state to true for ui
+      // deletes secret from cloud
+      destroySecret();
     } catch (error: any) {
-      setDecryptedSecret(error.message);
+      setDecryptedSecret(error.message); // if unable to decrypt it will display error message
     }
     resetField("password"); //clears field
   });
 
-  // destroy secret
+  // deletes secret from cloud
   const destroySecret = async () => {
     await API.graphql({
       query: deleteSecret,
       variables: { input: { id } },
     });
-    router.push("/")
+    router.push("/");
   };
-
-  // get id from url
-  const { id } = router.query;
 
   // gets the secret from cloud
   const secretQuery = useCallback(async () => {
@@ -100,36 +98,13 @@ const Secret: NextPage = () => {
         {!buttonClicked && secret !== null && (
           <div className="flex flex-col">
             <form onSubmit={onDecryptSubmit}>
-              <label className="form-label mb-2 inline-block text-gray-700">
-                Enter Password
-              </label>
-              <input
-                className="
-                  form-control
-                  m-0
-                  mb-4
-                  block
-                  w-full
-                  rounded
-                  border
-                  border-solid
-                  border-gray-300 bg-white
-                  bg-clip-padding px-3 py-2.5 text-base
-                  font-normal
-                  text-gray-700
-                  transition
-                  ease-in-out
-                  focus:border-blue-800 focus:bg-white focus:text-gray-700 focus:shadow-md focus:shadow-blue-300 focus:outline-none
-                "
-                type={"text"}
-                {...register("password", { required: true })}
-              />
-            <button
-              type="submit"
-              className="mb-2 rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white hover:bg-blue-700"
-            >
-              Decrypt Text!
-            </button>
+              <PasswordField register={register} />
+              <button
+                type="submit"
+                className="mb-2 rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white hover:bg-blue-700"
+              >
+                Decrypt Text!
+              </button>
             </form>
             <button
               onClick={destroySecret}

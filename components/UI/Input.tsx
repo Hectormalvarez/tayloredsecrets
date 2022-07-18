@@ -1,20 +1,12 @@
 import React from "react";
 
-type InputProps = {
-  register: (x: string) => {};
-  type: string;
-  placeholder: string;
-  label: string;
-  fieldName: string;
-};
-
 const Input = ({
   register,
   type,
   placeholder,
   label,
   fieldName,
-}: InputProps) => {
+}: any) => {
   return (
     <>
       <label className="form-label mb-2 inline-block capitalize text-gray-700">
