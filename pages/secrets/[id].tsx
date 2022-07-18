@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { decrypt } from "../../utils/crypto";
 
 import TayloredSecretsHeader from "../../components/UI/TayloredSecretsHeader";
+import Input from "../../components/UI/Input";
 
 const initialSecretState = { id: "", secret: "", createdAt: "" };
 

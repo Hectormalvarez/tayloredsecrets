@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { encrypt } from "../../utils/crypto";
 import { useEffect } from "react";
 
+import Input from "../UI/Input";
+
 enum PasswordType {
   passphrase = "passphrase",
   nopassword = "no-password",
@@ -21,9 +23,21 @@ type NewSecretFormData = {
   password: string;
 };
 
+const PasswordInput = ({ register }: any) => {
+  return (
+    <Input
+      fieldName="password"
+      register={register}
+      placeholder="Enter Password Here"
+      label="Password to Reveal Secret"
+      type="password"
+      />
+  );
+};
+
 // creating a next page
 const CreateSecretForm: NextPage = () => {
-  const router = useRouter(); 
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -32,7 +46,7 @@ const CreateSecretForm: NextPage = () => {
     formState: { errors },
   } = useForm<NewSecretFormData>({
     defaultValues: {
-      passwordType: PasswordType.nopassword
+      passwordType: PasswordType.nopassword,
     },
   });
 
@@ -49,6 +63,8 @@ const CreateSecretForm: NextPage = () => {
     const newSecret = {
       id,
       secret,
+      attempts: 0,
+      passwordType
     };
     await API.graphql({
       query: createSecret,
@@ -65,7 +81,10 @@ const CreateSecretForm: NextPage = () => {
   return (
     <form onSubmit={onSubmit}>
       <div className="flex flex-col">
-        <label htmlFor="secret" className="form-label mb-2 inline-block text-gray-700">
+        <label
+          htmlFor="secret"
+          className="form-label mb-2 inline-block text-gray-700"
+        >
           Secret
         </label>
         <input
@@ -117,35 +136,7 @@ const CreateSecretForm: NextPage = () => {
           <option value="pin">Pin</option>
           <option value="no-password">No Password</option>
         </select>
-        {passwordType === "passphrase" && (
-          <>
-            <label className="form-label mb-2 inline-block capitalize text-gray-700">
-              password to open secret
-            </label>
-            <input
-              className="
-                  form-control
-                  m-0
-                  mb-2
-                  block
-                  w-full
-                  rounded
-                  border
-                  border-solid
-                  border-gray-300 bg-white
-                  bg-clip-padding px-3 py-2.5 text-base
-                  font-normal
-                  text-gray-700
-                  transition
-                  ease-in-out
-                  focus:border-blue-800 focus:bg-white focus:text-gray-700 focus:shadow-md focus:shadow-blue-300 focus:outline-none
-                "
-              type={"password"}
-              {...register("password")}
-              placeholder="Enter Password Here"
-            />
-          </>
-        )}
+        {passwordType === "passphrase" && <PasswordInput register={register} />}
         <button
           type="submit"
           className="
