@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import CreateSecretForm from "../components/UI/CreateSecret";
+import CreateSecret from "../components/UI/CreateSecret";
 import TayloredSecretsHeader from "../components/UI/TayloredSecretsHeader";
 
 
@@ -17,7 +17,7 @@ const Home: NextPage = () => {
 
       <main className="">
         <TayloredSecretsHeader />
-        <CreateSecretForm />
+        <CreateSecret />
       </main>
     </div>
   );
