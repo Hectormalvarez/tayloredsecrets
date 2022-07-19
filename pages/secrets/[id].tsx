@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import { API } from "aws-amplify";
 import { getSecret } from "../../src/graphql/queries";
-import { deleteSecret } from "../../src/graphql/mutations";
+import { deleteSecret, updateSecret } from "../../src/graphql/mutations";
 
 import { useForm } from "react-hook-form";
 
@@ -13,7 +13,7 @@ import { decrypt } from "../../utils/crypto";
 
 import TayloredSecretsHeader from "../../components/UI/TayloredSecretsHeader";
 
-const initialSecretState = { id: "", secret: "", createdAt: "" };
+const initialSecretState = { id: "", secret: "", createdAt: "", attempts: 0 };
 
 type FormData = {
   password: string;
@@ -43,7 +43,16 @@ const Secret: NextPage = () => {
         variables: { input: { id } },
       });
     } catch (error: any) {
+      if (!secret.attempts) {
+        secret.attempts = 1;
+      } else {
+        secret.attempts++;
+      }
       setDecryptedSecret(error.message);
+      await API.graphql({
+        query: updateSecret,
+        variables: { input: { id, attempts: secret.attempts } },
+      });
     }
     resetField("password"); //clears field
   });
@@ -54,7 +63,7 @@ const Secret: NextPage = () => {
       query: deleteSecret,
       variables: { input: { id } },
     });
-    router.push("/")
+    router.push("/");
   };
 
   // get id from url
@@ -89,6 +98,7 @@ const Secret: NextPage = () => {
             <p>Secret ID: {secret.id}</p>
             <p>secret created: {secret.createdAt}</p>
             <p>secret Text: {secret.secret}</p>
+            <p>decrypt Attempts: {secret.attempts}</p>
             <p>Decrypted Text: {decryptedSecret}</p>
           </div>
         ) : (
@@ -123,12 +133,12 @@ const Secret: NextPage = () => {
                 type={"text"}
                 {...register("password", { required: true })}
               />
-            <button
-              type="submit"
-              className="mb-2 rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white hover:bg-blue-700"
-            >
-              Decrypt Text!
-            </button>
+              <button
+                type="submit"
+                className="mb-2 rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white hover:bg-blue-700"
+              >
+                Decrypt Text!
+              </button>
             </form>
             <button
               onClick={destroySecret}

@@ -6,7 +6,6 @@ import { createSecret } from "../../src/graphql/mutations";
 
 import { useForm } from "react-hook-form";
 import { encrypt } from "../../utils/crypto";
-import { useEffect } from "react";
 
 enum PasswordType {
   passphrase = "passphrase",
@@ -21,9 +20,11 @@ type NewSecretFormData = {
   password: string;
 };
 
-// creating a next page
+// Main a next page
 const CreateSecretForm: NextPage = () => {
-  const router = useRouter(); 
+  const router = useRouter();
+
+  // initialize form
   const {
     register,
     handleSubmit,
@@ -32,23 +33,26 @@ const CreateSecretForm: NextPage = () => {
     formState: { errors },
   } = useForm<NewSecretFormData>({
     defaultValues: {
-      passwordType: PasswordType.nopassword
+      passwordType: PasswordType.nopassword,
     },
   });
 
+  // watch the selected password type
   const passwordType = watch("passwordType");
 
+  // form onsubmit function
   const onSubmit = handleSubmit(async (data) => {
-    const id = uuid();
-    let secret;
-    if (data.password) {
+    const id = uuid(); //create id
+    let secret; //initialize secret viariable
+    if (data.password === PasswordType.passphrase || PasswordType.pin) { // if the password type is passphrase of pin it's assigned to the variable
       secret = encrypt(data.secret, data.password);
     } else {
-      secret = encrypt(data.secret, passwordType);
+      secret = encrypt(data.secret, passwordType); // if no password is selected the type is used as the password
     }
     const newSecret = {
       id,
       secret,
+      passwordType,
     };
     await API.graphql({
       query: createSecret,
@@ -58,14 +62,13 @@ const CreateSecretForm: NextPage = () => {
     router.push(`/secrets/${id}`);
   });
 
-  useEffect(() => {
-    console.log(passwordType);
-  }, [passwordType]);
-
   return (
     <form onSubmit={onSubmit}>
       <div className="flex flex-col">
-        <label htmlFor="secret" className="form-label mb-2 inline-block text-gray-700">
+        <label
+          htmlFor="secret"
+          className="form-label mb-2 inline-block text-gray-700"
+        >
           Secret
         </label>
         <input
