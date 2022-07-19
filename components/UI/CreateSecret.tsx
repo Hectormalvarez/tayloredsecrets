@@ -20,7 +20,7 @@ type NewSecretFormData = {
   password: string;
 };
 
-// Main a next page
+// Main next page
 const CreateSecretForm: NextPage = () => {
   const router = useRouter();
 
@@ -44,7 +44,8 @@ const CreateSecretForm: NextPage = () => {
   const onSubmit = handleSubmit(async (data) => {
     const id = uuid(); //create id
     let secret; //initialize secret viariable
-    if (data.password === PasswordType.passphrase || PasswordType.pin) { // if the password type is passphrase of pin it's assigned to the variable
+    if (data.passwordType === "passphrase" || data.passwordType === "pin") {
+      // if the password type is passphrase of pin it's assigned to the variable
       secret = encrypt(data.secret, data.password);
     } else {
       secret = encrypt(data.secret, passwordType); // if no password is selected the type is used as the password
