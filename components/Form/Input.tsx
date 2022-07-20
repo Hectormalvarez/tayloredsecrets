@@ -1,11 +1,6 @@
 import React from "react";
 
-const Input = ({
-  fieldName,
-  options,
-  register,
-  registerOptions,
-}: any) => {
+const Input = ({ fieldName, options, register, registerOptions, classes }: any) => {
   return (
     <>
       <label
@@ -15,7 +10,8 @@ const Input = ({
         {fieldName}
       </label>
       <input
-        className="
+        className={`
+                  ${classes}
                   form-control
                   m-0
                   mb-2
@@ -31,7 +27,7 @@ const Input = ({
                   transition
                   ease-in-out
                   focus:border-blue-800 focus:bg-white focus:text-gray-700 focus:shadow-md focus:shadow-blue-300 focus:outline-none
-                "
+                `}
         {...options}
         {...register(fieldName, registerOptions)}
       />
