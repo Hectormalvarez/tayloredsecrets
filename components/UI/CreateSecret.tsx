@@ -20,10 +20,11 @@ enum PasswordType {
 }
 
 // data types for new secret form
-type NewSecretFormData = {
+export type NewSecretFormData = {
   secret: string;
   passwordType: PasswordType;
   password: string;
+  string: string;
 };
 
 // Main next page
@@ -36,7 +37,6 @@ export default function CreateSecret() {
     handleSubmit,
     resetField,
     watch,
-    setValue,
     formState: { errors },
   } = useForm<NewSecretFormData>({
     defaultValues: {
@@ -77,6 +77,10 @@ export default function CreateSecret() {
     router.push(`/secrets/${id}`); // sends user to secret page
   });
 
+  // useEffect(() => {
+  //   resetField("passwordType")
+  // }, [passwordType]);
+
   return (
     <form onSubmit={onSubmit}>
       <div className="flex flex-col">
@@ -89,15 +93,10 @@ export default function CreateSecret() {
         {errors.secret?.type === "required" && (
           <p className="pb-2 text-lg text-red-400">Please enter a secret!</p>
         )}
-        <PasswordSelect
-          register={register}
-          passwordType={passwordType}
-          setValue={setValue}
-        />
+        <PasswordSelect register={register} />
         <SecretPassword register={register} passwordType={passwordType} />
         <SecretButton />
       </div>
     </form>
   );
 }
-

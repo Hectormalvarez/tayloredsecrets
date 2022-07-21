@@ -1,6 +1,22 @@
 import React from "react";
+import { UseFormRegister, FieldValues } from "react-hook-form";
+import { NewSecretFormData } from "../UI/CreateSecret";
 
-const Input = ({ fieldName, options, register, registerOptions, classes }: any) => {
+interface inputProps {
+  fieldName: string;
+  options: {};
+  register: UseFormRegister<NewSecretFormData & FieldValues>;
+  registerOptions: {};
+  classes?: string;
+}
+
+const Input = ({
+  fieldName,
+  options,
+  register,
+  registerOptions,
+  classes,
+}: inputProps) => {
   return (
     <>
       <label
