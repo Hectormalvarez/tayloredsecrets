@@ -13,11 +13,7 @@ import { decrypt } from "../../utils/crypto";
 import TayloredSecretsHeader from "../../components/UI/TayloredSecretsHeader";
 import PasswordField from "../../components/Form/PasswordField";
 
-<<<<<<< HEAD
-const initialSecretState = { id: "", secret: "", createdAt: "", passwordType: "" };
-=======
-const initialSecretState = { id: "", secret: "", createdAt: "", attempts: 0 };
->>>>>>> restructure
+const initialSecretState = { id: "", secret: "", createdAt: "", passwordType: "", attempts: 0 };
 
 type FormData = {
   password: string;
@@ -49,20 +45,7 @@ const Secret: NextPage = () => {
       // deletes secret from cloud
       destroySecret();
     } catch (error: any) {
-<<<<<<< HEAD
       setDecryptedSecret(error.message); // if unable to decrypt it will display error message
-=======
-      if (!secret.attempts) {
-        secret.attempts = 1;
-      } else {
-        secret.attempts++;
-      }
-      setDecryptedSecret(error.message);
-      await API.graphql({
-        query: updateSecret,
-        variables: { input: { id, attempts: secret.attempts } },
-      });
->>>>>>> restructure
     }
     resetField("password"); //clears field
   });
@@ -116,34 +99,7 @@ const Secret: NextPage = () => {
         {!buttonClicked && secret !== null && (
           <div className="flex flex-col">
             <form onSubmit={onDecryptSubmit}>
-<<<<<<< HEAD
               <PasswordField register={register} />
-=======
-              <label className="form-label mb-2 inline-block text-gray-700">
-                Enter Password
-              </label>
-              <input
-                className="
-                  form-control
-                  m-0
-                  mb-4
-                  block
-                  w-full
-                  rounded
-                  border
-                  border-solid
-                  border-gray-300 bg-white
-                  bg-clip-padding px-3 py-2.5 text-base
-                  font-normal
-                  text-gray-700
-                  transition
-                  ease-in-out
-                  focus:border-blue-800 focus:bg-white focus:text-gray-700 focus:shadow-md focus:shadow-blue-300 focus:outline-none
-                "
-                type={"text"}
-                {...register("password", { required: true })}
-              />
->>>>>>> restructure
               <button
                 type="submit"
                 className="mb-2 rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white hover:bg-blue-700"
