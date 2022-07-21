@@ -1,4 +1,4 @@
-const PasswordSelect = ({ register, passwordType, setValue }: any) => {
+const PasswordSelect = ({ register }: any) => {
   return (
     <div className="flex">
       {["passphrase", "pin"].map((name) => (

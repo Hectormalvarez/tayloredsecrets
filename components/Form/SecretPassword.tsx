@@ -12,6 +12,7 @@ const SecretPassword: any = ({ register, passwordType }: any) => {
             options={{ type: "password", placeholder: "Enter Password" }}
             register={register}
             registerOptions={{ required: true }}
+            key="password"
           />
         );
       case "pin":
@@ -22,6 +23,7 @@ const SecretPassword: any = ({ register, passwordType }: any) => {
             register={register}
             registerOptions={{ required: true, maxLength: 4 }}
             classes={pinClasses}
+            key="pin"
           />
         );
       default:
